@@ -92,7 +92,7 @@ const Navbar = () => {
               <span className="profile-name">Konarch</span>
             </div>
             <div className="nav-mobile-menu" onClick={toggleMenu}>
-              <Menu size={24} />
+              <Menu size={24} color="white" />
             </div>
           </div>
         </div>
