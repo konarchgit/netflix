@@ -97,7 +97,8 @@ function App() {
           overview: m.overview,
           image: `${IMAGE_BASE_URL}${m.backdrop_path}`,
           rating: m.vote_average,
-          year: (m.release_date || m.first_air_date) ? new Date(m.release_date || m.first_air_date).getFullYear() : 'N/A'
+          year: (m.release_date || m.first_air_date) ? new Date(m.release_date || m.first_air_date).getFullYear() : 'N/A',
+          isTv: m.media_type === 'tv'
         })));
       } catch (error) {
         console.error("Error fetching data from TMDB:", error);

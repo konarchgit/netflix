@@ -75,13 +75,13 @@ const Hero = ({ movies, onPlay, onDetail }) => {
                                         </div>
 
                                         <div className="hero-actions">
-                                            <button className="btn btn-watch" onClick={() => onPlay(movie.id, movie.title, false, true)}>
+                                            <button className="btn btn-watch" onClick={() => onPlay(movie.id, movie.title, movie.isTv, true)}>
                                                 <Play size={20} fill="currentColor" /> Watch Now
                                             </button>
                                             <button className="btn btn-info" onClick={() => onDetail(movie.id)}>
                                                 <Info size={20} /> More Info
                                             </button>
-                                            <button className="btn btn-trailer" onClick={() => onPlay(movie.id, movie.title, false, false)}>See Trailer</button>
+                                            <button className="btn btn-trailer" onClick={() => onPlay(movie.id, movie.title, movie.isTv, false)}>See Trailer</button>
                                         </div>
                                     </motion.div>
 
@@ -90,7 +90,7 @@ const Hero = ({ movies, onPlay, onDetail }) => {
                                             className="play-btn-large"
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
-                                            onClick={() => onPlay(movie.id, movie.title, false, true)}
+                                            onClick={() => onPlay(movie.id, movie.title, movie.isTv, true)}
                                         >
                                             <div className="play-ripple"></div>
                                             <Play size={40} fill="white" />
