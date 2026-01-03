@@ -25,9 +25,17 @@ function App() {
   const [topTenMovies, setTopTenMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [popularShows, setPopularShows] = useState([]);
-  const [actionMovies, setActionMovies] = useState([]);
+  const [realityShows, setRealityShows] = useState([]);
+  const [countryRealityShows, setCountryRealityShows] = useState([]);
+  const [adventureMovies, setAdventureMovies] = useState([]);
+  const [comedyMovies, setComedyMovies] = useState([]);
+  const [documentaries, setDocumentaries] = useState([]);
+  const [animeShows, setAnimeShows] = useState([]);
+  const [usTvShows, setUsTvShows] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [koreanDramas, setKoreanDramas] = useState([]);
+  const [countryMovies, setCountryMovies] = useState([]);
+  const [userCountry, setUserCountry] = useState('');
   const [featuredMovie, setFeaturedMovie] = useState(null);
 
   // Video Modal States
@@ -82,14 +90,7 @@ function App() {
           isTv: true
         })));
 
-        const actionResp = await axios.get(requests.fetchActionMovies);
-        setActionMovies(actionResp.data.results.map(m => ({
-          id: m.id,
-          title: m.title || m.name,
-          image: `${POSTER_BASE_URL}${m.poster_path}`,
-          rating: m.vote_average,
-          year: m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'
-        })));
+
 
         const trendingResp = await axios.get(requests.fetchTrending);
         setTrendingMovies(trendingResp.data.results.slice(0, 5).map(m => ({
@@ -107,6 +108,116 @@ function App() {
         setKoreanDramas(koreanResp.data.results.map(m => ({
           id: m.id,
           title: m.name || m.title,
+          image: `${POSTER_BASE_URL}${m.poster_path}`,
+          rating: m.vote_average,
+          year: m.first_air_date ? new Date(m.first_air_date).getFullYear() : 'N/A',
+          isTv: true
+        })));
+
+        // Fetch User Country and Movies from that Country
+        try {
+          const ipResp = await axios.get('https://ipapi.co/json/');
+          const countryCode = ipResp.data.country_code;
+          const countryName = ipResp.data.country_name;
+          setUserCountry(countryName);
+
+          if (countryCode) {
+            const countryMoviesResp = await axios.get(requests.fetchMoviesByCountry(countryCode));
+            setCountryMovies(countryMoviesResp.data.results.map(m => ({
+              id: m.id,
+              title: m.title || m.name,
+              image: `${POSTER_BASE_URL}${m.poster_path}`,
+              rating: m.vote_average,
+              year: m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'
+            })));
+          }
+
+          if (countryCode) {
+            const countryRealityResp = await axios.get(requests.fetchRealityShowsByCountry(countryCode));
+            setCountryRealityShows(countryRealityResp.data.results.map(m => ({
+              id: m.id,
+              title: m.name || m.title,
+              image: `${POSTER_BASE_URL}${m.poster_path}`,
+              rating: m.vote_average,
+              year: m.first_air_date ? new Date(m.first_air_date).getFullYear() : 'N/A',
+              isTv: true
+            })));
+          }
+        } catch (error) {
+          console.error("Error fetching country data:", error);
+          // Fallback to India if detection fails (optional)
+          setUserCountry('India');
+          const fallbackResp = await axios.get(requests.fetchMoviesByCountry('IN'));
+          setCountryMovies(fallbackResp.data.results.map(m => ({
+            id: m.id,
+            title: m.title || m.name,
+            image: `${POSTER_BASE_URL}${m.poster_path}`,
+            rating: m.vote_average,
+            year: m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'
+          })));
+
+          const fallbackRealityResp = await axios.get(requests.fetchRealityShowsByCountry('IN'));
+          setCountryRealityShows(fallbackRealityResp.data.results.map(m => ({
+            id: m.id,
+            title: m.name || m.title,
+            image: `${POSTER_BASE_URL}${m.poster_path}`,
+            rating: m.vote_average,
+            year: m.first_air_date ? new Date(m.first_air_date).getFullYear() : 'N/A',
+            isTv: true
+          })));
+        }
+
+        const realityResp = await axios.get(requests.fetchRealityShows);
+        setRealityShows(realityResp.data.results.map(m => ({
+          id: m.id,
+          title: m.name || m.title,
+          image: `${POSTER_BASE_URL}${m.poster_path}`,
+          rating: m.vote_average,
+          year: m.first_air_date ? new Date(m.first_air_date).getFullYear() : 'N/A',
+          isTv: true
+        })));
+
+        const usTvResp = await axios.get(requests.fetchUSTvShows);
+        setUsTvShows(usTvResp.data.results.map(m => ({
+          id: m.id,
+          title: m.name || m.title,
+          image: `${POSTER_BASE_URL}${m.poster_path}`,
+          rating: m.vote_average,
+          year: m.first_air_date ? new Date(m.first_air_date).getFullYear() : 'N/A',
+          isTv: true
+        })));
+
+        const adventureResp = await axios.get(requests.fetchAdventureMovies);
+        setAdventureMovies(adventureResp.data.results.map(m => ({
+          id: m.id,
+          title: m.title || m.name,
+          image: `${POSTER_BASE_URL}${m.poster_path}`,
+          rating: m.vote_average,
+          year: m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'
+        })));
+
+        const comedyResp = await axios.get(requests.fetchComedyMovies);
+        setComedyMovies(comedyResp.data.results.map(m => ({
+          id: m.id,
+          title: m.title || m.name,
+          image: `${POSTER_BASE_URL}${m.poster_path}`,
+          rating: m.vote_average,
+          year: m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'
+        })));
+
+        const docResp = await axios.get(requests.fetchDocumentaries);
+        setDocumentaries(docResp.data.results.map(m => ({
+          id: m.id,
+          title: m.title || m.name,
+          image: `${POSTER_BASE_URL}${m.poster_path}`,
+          rating: m.vote_average,
+          year: m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'
+        })));
+
+        const animeResp = await axios.get(requests.fetchAnime);
+        setAnimeShows(animeResp.data.results.map(m => ({
+          id: m.id,
+          title: m.title || m.name,
           image: `${POSTER_BASE_URL}${m.poster_path}`,
           rating: m.vote_average,
           year: m.first_air_date ? new Date(m.first_air_date).getFullYear() : 'N/A',
@@ -181,11 +292,20 @@ function App() {
               <div className="main-content">
                 <TopTenRow movies={topTenMovies} onPlay={handlePlay} onDetail={handleOpenDetail} />
                 <UpcomingMovies movies={upcomingMovies} onPlay={handlePlay} onDetail={handleOpenDetail} />
+                {countryMovies.length > 0 && (
+                  <MovieRow title={`Made in ${userCountry}`} movies={countryMovies} onPlay={handlePlay} onDetail={handleOpenDetail} />
+                )}
+                <MovieRow title="US TV Shows" movies={usTvShows} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
                 <FeaturedBanner movie={featuredMovie} onPlay={handlePlay} onDetail={handleOpenDetail} />
                 <Features />
+                <MovieRow title="Epic World" movies={adventureMovies} onPlay={handlePlay} onDetail={handleOpenDetail} />
+                <MovieRow title="Laughter Session" movies={comedyMovies} onPlay={handlePlay} onDetail={handleOpenDetail} />
+                <MovieRow title="Documentary" movies={documentaries} onPlay={handlePlay} onDetail={handleOpenDetail} />
+                <MovieRow title="Anime" movies={animeShows} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
                 <Subscription />
                 <MovieRow title="Only on Torin" movies={popularShows} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
-                <MovieRow title="Action & Adventure" movies={actionMovies} onPlay={handlePlay} onDetail={handleOpenDetail} />
+                <MovieRow title={`Reality Shows in ${userCountry}`} movies={countryRealityShows} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
+                <MovieRow title="Popular Reality Shows Worldwide" movies={realityShows} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
                 <MovieRow title="K-Dramas (Korean Series)" movies={koreanDramas} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
                 <FAQ />
                 <FreeTrial />

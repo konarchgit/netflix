@@ -10,9 +10,13 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './Hero.css';
 
-const Hero = ({ movies, onPlay, onDetail }) => {
+const Hero = ({ movies, onPlay, onDetail, showArrows = true }) => {
     // Fallback if no movies are provided yet
     const displayMovies = movies && movies.length > 0 ? movies : [];
+
+    const prevRef = React.useRef(null);
+    const nextRef = React.useRef(null);
+    const [isSwiperInit, setIsSwiperInit] = React.useState(false);
 
     if (displayMovies.length === 0) {
         return (
@@ -29,11 +33,16 @@ const Hero = ({ movies, onPlay, onDetail }) => {
                 modules={[Navigation, Pagination, Autoplay]}
                 pagination={{ clickable: true, el: '.custom-pagination' }}
                 navigation={{
-                    nextEl: '.swiper-btn-next',
-                    prevEl: '.swiper-btn-prev',
+                    nextEl: nextRef.current,
+                    prevEl: prevRef.current,
                 }}
+                onBeforeInit={(swiper) => {
+                    swiper.params.navigation.prevEl = prevRef.current;
+                    swiper.params.navigation.nextEl = nextRef.current;
+                }}
+                onInit={() => setIsSwiperInit(true)} // Force re-render to pick up refs
                 autoplay={{ delay: 5000, disableOnInteraction: false }}
-                loop={true}
+                loop={displayMovies.length > 1} // Only loop if more than 1 slide
                 className="hero-swiper"
             >
                 {displayMovies.map((movie) => (
@@ -105,10 +114,12 @@ const Hero = ({ movies, onPlay, onDetail }) => {
                 {/* Custom Navigation & Pagination Container */}
                 <div className="hero-controls container">
                     <div className="custom-pagination"></div>
-                    <div className="hero-nav-btns">
-                        <button className="swiper-btn-prev"><ChevronLeft size={24} /></button>
-                        <button className="swiper-btn-next"><ChevronRight size={24} /></button>
-                    </div>
+                    {showArrows && displayMovies.length > 1 && (
+                        <div className="hero-nav-btns">
+                            <button ref={prevRef} className="swiper-btn-prev"><ChevronLeft size={24} /></button>
+                            <button ref={nextRef} className="swiper-btn-next"><ChevronRight size={24} /></button>
+                        </div>
+                    )}
                 </div>
             </Swiper>
         </div>
