@@ -27,6 +27,7 @@ function App() {
   const [popularShows, setPopularShows] = useState([]);
   const [actionMovies, setActionMovies] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
+  const [koreanDramas, setKoreanDramas] = useState([]);
   const [featuredMovie, setFeaturedMovie] = useState(null);
 
   // Video Modal States
@@ -97,8 +98,19 @@ function App() {
           overview: m.overview,
           image: `${IMAGE_BASE_URL}${m.backdrop_path}`,
           rating: m.vote_average,
+          rating: m.vote_average,
           year: (m.release_date || m.first_air_date) ? new Date(m.release_date || m.first_air_date).getFullYear() : 'N/A',
           isTv: m.media_type === 'tv'
+        })));
+
+        const koreanResp = await axios.get(requests.fetchKoreanDramas);
+        setKoreanDramas(koreanResp.data.results.map(m => ({
+          id: m.id,
+          title: m.name || m.title,
+          image: `${POSTER_BASE_URL}${m.poster_path}`,
+          rating: m.vote_average,
+          year: m.first_air_date ? new Date(m.first_air_date).getFullYear() : 'N/A',
+          isTv: true
         })));
       } catch (error) {
         console.error("Error fetching data from TMDB:", error);
@@ -174,6 +186,7 @@ function App() {
                 <Subscription />
                 <MovieRow title="Only on Torin" movies={popularShows} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
                 <MovieRow title="Action & Adventure" movies={actionMovies} onPlay={handlePlay} onDetail={handleOpenDetail} />
+                <MovieRow title="K-Dramas (Korean Series)" movies={koreanDramas} onPlay={(id, title) => handlePlay(id, title, true)} onDetail={(id) => handleOpenDetail(id, true)} />
                 <FAQ />
                 <FreeTrial />
               </div>

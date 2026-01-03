@@ -24,6 +24,7 @@ export const requests = {
     fetchTvSearch: (query) => `${BASE_URL}/search/tv?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`,
     fetchMovieDetails: (id) => `${BASE_URL}/movie/${id}?api_key=${API_KEY}&append_to_response=credits,videos,images`,
     fetchTvDetails: (id) => `${BASE_URL}/tv/${id}?api_key=${API_KEY}&append_to_response=credits,videos,images`,
+    fetchKoreanDramas: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_original_language=ko&with_genres=18&sort_by=popularity.desc`,
 };
 
 export const getTrailerUrl = (movieId) => `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`;
