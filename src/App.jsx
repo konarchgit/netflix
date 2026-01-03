@@ -116,7 +116,7 @@ function App() {
     if (isMovie) {
       // For full movie playback, we use an embed service
       // isTv flag might be needed for TV shows too
-      const baseUrl = isTv ? "https://vidsrc.me/embed/tv?tmdb=" : "https://vidsrc.me/embed/movie?tmdb=";
+      const baseUrl = isTv ? "https://vidsrc.cc/v2/embed/tv/" : "https://vidsrc.cc/v2/embed/movie/";
       setPlayUrl(`${baseUrl}${id}`);
       setSelectedMovieTitle(title);
       return;
