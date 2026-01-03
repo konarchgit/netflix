@@ -18,6 +18,11 @@ const DetailModal = ({ isOpen, onClose, mediaId, isTv, onPlay }) => {
     const [details, setDetails] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // TV Show specific states
+    const [selectedSeason, setSelectedSeason] = useState(1);
+    const [episodes, setEpisodes] = useState([]);
+    const [loadingEpisodes, setLoadingEpisodes] = useState(false);
+
     useEffect(() => {
         const fetchDetails = async () => {
             if (!isOpen || !mediaId) return;
@@ -28,6 +33,11 @@ const DetailModal = ({ isOpen, onClose, mediaId, isTv, onPlay }) => {
                     : requests.fetchMovieDetails(mediaId);
                 const resp = await axios.get(endpoint);
                 setDetails(resp.data);
+
+                // Reset season selection when opening new show
+                if (isTv) {
+                    setSelectedSeason(1);
+                }
             } catch (error) {
                 console.error("Error fetching media details:", error);
             }
@@ -36,6 +46,25 @@ const DetailModal = ({ isOpen, onClose, mediaId, isTv, onPlay }) => {
 
         fetchDetails();
     }, [isOpen, mediaId, isTv]);
+
+    // Fetch Episodes when Season changes
+    useEffect(() => {
+        const fetchEpisodes = async () => {
+            if (!isTv || !mediaId || !isOpen) return;
+
+            setLoadingEpisodes(true);
+            try {
+                const resp = await axios.get(requests.fetchTvSeason(mediaId, selectedSeason));
+                setEpisodes(resp.data.episodes);
+            } catch (error) {
+                console.error("Error fetching episodes:", error);
+                setEpisodes([]);
+            }
+            setLoadingEpisodes(false);
+        };
+
+        fetchEpisodes();
+    }, [mediaId, selectedSeason, isTv, isOpen]);
 
     if (!isOpen) return null;
 
@@ -71,7 +100,7 @@ const DetailModal = ({ isOpen, onClose, mediaId, isTv, onPlay }) => {
                                     <div className="modal-banner-actions">
                                         <h1 className="modal-title">{details.title || details.name}</h1>
                                         <div className="modal-primary-actions">
-                                            <button className="btn btn-watch" onClick={() => onPlay(details.id, details.title || details.name, isTv, true)}>
+                                            <button className="btn btn-watch" onClick={() => onPlay(details.id, details.title || details.name, isTv, true, 1, 1)}>
                                                 <Play size={20} fill="currentColor" /> Watch Now
                                             </button>
                                         </div>
@@ -125,6 +154,61 @@ const DetailModal = ({ isOpen, onClose, mediaId, isTv, onPlay }) => {
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* EPISODES SECTION (TV Only) */}
+                                    {isTv && details.seasons && (
+                                        <div className="episodes-section">
+                                            <div className="episodes-header">
+                                                <h3>Episodes</h3>
+                                                <div className="season-selector">
+                                                    <select
+                                                        value={selectedSeason}
+                                                        onChange={(e) => setSelectedSeason(Number(e.target.value))}
+                                                        className="season-dropdown"
+                                                    >
+                                                        {details.seasons.filter(s => s.season_number > 0).map(season => (
+                                                            <option key={season.id} value={season.season_number}>
+                                                                {season.name} ({season.episode_count} Episodes)
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            {loadingEpisodes ? (
+                                                <div className="episodes-loader"><div className="loader small"></div></div>
+                                            ) : (
+                                                <div className="episodes-list">
+                                                    {episodes.map(episode => (
+                                                        <div key={episode.id} className="episode-card" onClick={() => onPlay(
+                                                            details.id,
+                                                            `${details.name} - S${selectedSeason}E${episode.episode_number}: ${episode.name}`,
+                                                            true,
+                                                            true,
+                                                            selectedSeason,
+                                                            episode.episode_number
+                                                        )}>
+                                                            <div className="episode-num">{episode.episode_number}</div>
+                                                            <div className="episode-img-wrapper">
+                                                                <img
+                                                                    src={episode.still_path ? `${POSTER_BASE_URL}${episode.still_path}` : `${IMAGE_BASE_URL}${details.backdrop_path}`}
+                                                                    alt={episode.name}
+                                                                />
+                                                                <div className="episode-play-overlay"><Play size={24} fill="white" /></div>
+                                                            </div>
+                                                            <div className="episode-info">
+                                                                <div className="episode-title-row">
+                                                                    <h4>{episode.name}</h4>
+                                                                    <span className="episode-duration">{episode.runtime ? `${episode.runtime}m` : ''}</span>
+                                                                </div>
+                                                                <p className="episode-overview">{episode.overview ? (episode.overview.length > 100 ? episode.overview.substring(0, 100) + '...' : episode.overview) : ''}</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
 
                                     {/* Media Gallery Section */}
                                     <div className="modal-gallery-section">

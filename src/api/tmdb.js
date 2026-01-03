@@ -38,6 +38,7 @@ export const requests = {
     fetchUpcomingNextWeek: `${BASE_URL}/discover/movie?api_key=${API_KEY}&primary_release_date.gte=${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}&primary_release_date.lte=${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}&sort_by=popularity.desc`,
     fetchTrendingMoviesDay: `${BASE_URL}/trending/movie/day?api_key=${API_KEY}`,
     fetchTrendingTvDay: `${BASE_URL}/trending/tv/day?api_key=${API_KEY}`,
+    fetchTvSeason: (tvId, seasonNumber) => `${BASE_URL}/tv/${tvId}/season/${seasonNumber}?api_key=${API_KEY}`,
 };
 
 export const getTrailerUrl = (movieId) => `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`;

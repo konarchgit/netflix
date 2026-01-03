@@ -345,9 +345,194 @@
         grid-template-columns: 1fr;
     }
 
+
     .modal-gallery-section {
         margin-top: 2rem;
         padding-top: 2rem;
         gap: 2.5rem;
     }
+}
+
+/* Episodes Section (TV Only) */
+.episodes-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.episodes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.episodes-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.season-selector {
+    position: relative;
+}
+
+.season-dropdown {
+    background-color: #1a1a1a;
+    /* Dark background */
+    color: white;
+    border: 1px solid #444;
+    padding: 10px 40px 10px 15px;
+    /* Extra padding for arrow */
+    font-size: 1.1rem;
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    outline: none;
+    font-weight: 600;
+    appearance: none;
+    /* Remove default arrow */
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    /* Shadow for depth */
+    transition: all 0.3s ease;
+}
+
+.season-dropdown:hover,
+.season-dropdown:focus {
+    background-color: #252525;
+    border-color: #fff;
+    /* Highlights on interaction */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    /* Glow effect */
+}
+
+.episodes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Custom Scrollbar */
+.episodes-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.episodes-list::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 3px;
+}
+
+.episodes-list::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.episode-card {
+    display: flex;
+    align-items: flex-start;
+    /* Align top for better stacking */
+    gap: 20px;
+    /* Space between elements */
+    padding: 15px;
+    background-color: transparent;
+    /* Clean look */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #333;
+}
+
+.episode-card:hover {
+    background-color: #222;
+}
+
+.episode-num {
+    font-size: 1.5rem;
+    color: #ccc;
+    font-weight: normal;
+    min-width: 40px;
+    padding-top: 25px;
+    /* Center aligned vertically relative to image height approx */
+    text-align: center;
+}
+
+.episode-img-wrapper {
+    position: relative;
+    width: 160px;
+    /* Fixed width small image */
+    height: 90px;
+    flex-shrink: 0;
+    /* IMPT: Don't shrink */
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.episode-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.episode-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border: 1px solid white;
+    /* Border on hover */
+}
+
+.episode-card:hover .episode-play-overlay {
+    opacity: 1;
+}
+
+.episode-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 5px;
+}
+
+.episode-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.episode-title-row h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.episode-duration {
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.episode-overview {
+    font-size: 0.9rem;
+    color: #aaa;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* Limit text lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }

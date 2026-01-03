@@ -87,7 +87,7 @@ const Hero = ({ movies, onPlay, onDetail, showArrows = true }) => {
                                             <button className="btn btn-watch" onClick={() => onPlay(movie.id, movie.title, movie.isTv, true)}>
                                                 <Play size={20} fill="currentColor" /> Watch Now
                                             </button>
-                                            <button className="btn btn-info" onClick={() => onDetail(movie.id)}>
+                                            <button className="btn btn-info" onClick={() => onDetail(movie.id, movie.isTv)}>
                                                 <Info size={20} /> More Info
                                             </button>
                                             <button className="btn btn-trailer" onClick={() => onPlay(movie.id, movie.title, movie.isTv, false)}>See Trailer</button>

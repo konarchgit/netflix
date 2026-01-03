@@ -40,9 +40,8 @@ function App() {
   const [featuredMovie, setFeaturedMovie] = useState(null);
 
   // Video Modal States
-  const [playUrl, setPlayUrl] = useState(null);
+  const [videoPlayerState, setVideoPlayerState] = useState(null); // { mode: 'full' | 'trailer', url: string, id, type: 'movie'|'tv', season, episode, title }
   const [detailMedia, setDetailMedia] = useState(null); // { id, isTv }
-  const [selectedMovieTitle, setSelectedMovieTitle] = useState('');
 
   useEffect(() => {
     async function fetchData() {
@@ -235,35 +234,42 @@ function App() {
     setDetailMedia({ id, isTv });
   };
 
-  const handlePlay = async (id, title, isTv = false, isMovie = false) => {
+  const handlePlay = async (id, title, isTv = false, isFullVideo = false, season = null, episode = null) => {
     if (!id) return;
 
-    if (isMovie) {
-      // For full movie playback, we use an embed service
-      // isTv flag might be needed for TV shows too
-      const baseUrl = isTv ? "https://vidsrc.cc/v2/embed/tv/" : "https://vidsrc.cc/v2/embed/movie/";
-      setPlayUrl(`${baseUrl}${id}`);
-      setSelectedMovieTitle(title);
+    // Full Video Playback (Movie or TV Episode)
+    if (isFullVideo) {
+      setVideoPlayerState({
+        mode: 'full',
+        id: id,
+        type: isTv ? 'tv' : 'movie',
+        season: season || 1,
+        episode: episode || 1,
+        title: title
+      });
       return;
     }
 
+    // Trailer Playback logic
     try {
       const url = isTv ? getTvTrailerUrl(id) : getTrailerUrl(id);
       const response = await axios.get(url);
       const results = response.data.results || [];
 
-      // Look for a YouTube trailer specifically, otherwise fall back to any video
       const trailer = results.find(vid => vid.site === 'YouTube' && (vid.type === 'Trailer' || vid.type === 'Teaser')) || results[0];
 
       if (trailer && trailer.key) {
-        setPlayUrl(`https://www.youtube.com/embed/${trailer.key}?autoplay=1&modestbranding=1&rel=0`);
-        setSelectedMovieTitle(title);
+        setVideoPlayerState({
+          mode: 'trailer',
+          url: `https://www.youtube.com/embed/${trailer.key}?autoplay=1&modestbranding=1&rel=0`,
+          title: title
+        });
       } else {
         alert(`Sorry, no trailer available for "${title}".`);
       }
     } catch (error) {
       console.error("Error fetching trailer:", error);
-      // Try the other endpoint if one fails (sometimes ID types cross over in TMDB)
+      // Fallback logic
       try {
         const fallbackUrl = !isTv ? getTvTrailerUrl(id) : getTrailerUrl(id);
         const fallbackResp = await axios.get(fallbackUrl);
@@ -271,8 +277,11 @@ function App() {
         const fallbackTrailer = fallbackResults.find(vid => vid.site === 'YouTube') || fallbackResults[0];
 
         if (fallbackTrailer && fallbackTrailer.key) {
-          setPlayUrl(`https://www.youtube.com/embed/${fallbackTrailer.key}?autoplay=1&modestbranding=1&rel=0`);
-          setSelectedMovieTitle(title);
+          setVideoPlayerState({
+            mode: 'trailer',
+            url: `https://www.youtube.com/embed/${fallbackTrailer.key}?autoplay=1&modestbranding=1&rel=0`,
+            title: title
+          });
           return;
         }
       } catch (e) {
@@ -321,11 +330,10 @@ function App() {
         <Footer />
 
         <AnimatePresence>
-          {playUrl && (
+          {videoPlayerState && (
             <VideoModal
-              videoUrl={playUrl}
-              title={selectedMovieTitle}
-              onClose={() => setPlayUrl(null)}
+              playerState={videoPlayerState}
+              onClose={() => setVideoPlayerState(null)}
             />
           )}
           {detailMedia && (
