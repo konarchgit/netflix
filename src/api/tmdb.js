@@ -1,5 +1,5 @@
 const API_KEY = 'b2aa91ce2080244606eb044aa2de7080';
-const BASE_URL = 'https://api.themoviedb.org/3';
+const BASE_URL = 'https://api.tmdb.org/3';
 
 export const requests = {
     fetchTrending: `${BASE_URL}/trending/all/week?api_key=${API_KEY}&language=en-US`,
