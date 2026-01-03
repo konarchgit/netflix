@@ -31,6 +31,13 @@ export const requests = {
     fetchAnime: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=16&with_original_language=ja&sort_by=popularity.desc`,
     fetchRealityShows: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=10764&sort_by=popularity.desc`,
     fetchRealityShowsByCountry: (countryCode) => `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=10764&with_origin_country=${countryCode}&sort_by=popularity.desc`,
+    // New & Popular Endpoints
+    fetchNewReleases: `${BASE_URL}/discover/movie?api_key=${API_KEY}&sort_by=primary_release_date.desc&vote_count.gte=100`, // New Releases (Movies)
+    fetchNewTvReleases: `${BASE_URL}/discover/tv?api_key=${API_KEY}&sort_by=first_air_date.desc&vote_count.gte=50`, // New Releases (TV)
+    fetchUpcomingWeek: `${BASE_URL}/discover/movie?api_key=${API_KEY}&primary_release_date.gte=${new Date().toISOString().split('T')[0]}&primary_release_date.lte=${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}&sort_by=popularity.desc`,
+    fetchUpcomingNextWeek: `${BASE_URL}/discover/movie?api_key=${API_KEY}&primary_release_date.gte=${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}&primary_release_date.lte=${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}&sort_by=popularity.desc`,
+    fetchTrendingMoviesDay: `${BASE_URL}/trending/movie/day?api_key=${API_KEY}`,
+    fetchTrendingTvDay: `${BASE_URL}/trending/tv/day?api_key=${API_KEY}`,
 };
 
 export const getTrailerUrl = (movieId) => `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`;

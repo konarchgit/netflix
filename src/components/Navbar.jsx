@@ -66,7 +66,7 @@ const Navbar = () => {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/tv-shows">TV Shows</Link></li>
               <li><Link to="/movies">Movies</Link></li>
-              <li><a href="#new">New & Popular</a></li>
+              <li><Link to="/new-popular">New & Popular</Link></li>
               <li><a href="#my-list">My List</a></li>
             </ul>
           </div>

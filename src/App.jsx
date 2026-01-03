@@ -17,6 +17,7 @@ import Movies from './components/Movies';
 import TvShows from './components/TvShows';
 import Search from './components/Search';
 import DetailModal from './components/DetailModal';
+import NewAndPopular from './components/NewAndPopular';
 import { AnimatePresence } from 'framer-motion';
 import requests, { POSTER_BASE_URL, IMAGE_BASE_URL, getTrailerUrl, getTvTrailerUrl } from './api/tmdb';
 import './App.css';
@@ -315,6 +316,7 @@ function App() {
           <Route path="/movies" element={<Movies onPlay={handlePlay} onDetail={handleOpenDetail} />} />
           <Route path="/tv-shows" element={<TvShows onPlay={handlePlay} onDetail={handleOpenDetail} />} />
           <Route path="/search" element={<Search onPlay={handlePlay} onDetail={handleOpenDetail} />} />
+          <Route path="/new-popular" element={<NewAndPopular onPlay={handlePlay} onDetail={handleOpenDetail} />} />
         </Routes>
         <Footer />
 

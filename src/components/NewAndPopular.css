@@ -1,0 +1,29 @@
+.new-popular-page {
+    background-color: #111;
+    min-height: 100vh;
+    padding-top: 80px;
+    /* Navbar height */
+    padding-bottom: 50px;
+    color: white;
+}
+
+.new-popular-header {
+    padding: 0 4%;
+    margin-bottom: 20px;
+}
+
+.new-popular-header h1 {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.new-popular-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Ensure Top Ten Row numbers are visible if background is dark */
+.top-ten-rank {
+    /* Existing TopTenRow css should handle this, but ensuring responsiveness */
+}
