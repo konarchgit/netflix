@@ -1,0 +1,17 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  position: relative;
+  z-index: 10;
+  padding-bottom: 5rem;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,205 @@
+.subscription-section {
+    background-color: var(--background);
+    overflow: hidden;
+}
+
+.subscription-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: 5rem;
+}
+
+/* Visual Area */
+.subscription-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tv-mockup {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    background: #000;
+    border-radius: 20px;
+    padding: 15px;
+    border: 8px solid #333;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+}
+
+.tv-screen {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+}
+
+.device-overlays {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.phone-overlay {
+    position: absolute;
+    bottom: -40px;
+    right: -30px;
+    width: 220px;
+    height: auto;
+    border-radius: 30px;
+    border: 5px solid #222;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    z-index: 5;
+}
+
+.controller-overlay {
+    position: absolute;
+    bottom: -20px;
+    left: -50px;
+    width: 180px;
+    height: auto;
+    z-index: 6;
+    filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.8));
+}
+
+/* Content Area */
+.sub-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+}
+
+.sub-description {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.offer-highlight {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+}
+
+.offer-highlight .underline {
+    border-bottom: 2px solid var(--primary);
+}
+
+.pricing-cards {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.price-card {
+    padding: 2.5rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.primary-card {
+    background: var(--primary);
+    color: white;
+    text-align: center;
+}
+
+.secondary-card {
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-label {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.price-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.currency {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.amount {
+    font-size: 3rem;
+    font-weight: 900;
+}
+
+.period {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.secondary-card h4 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.learn-more {
+    color: var(--primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-pricing {
+    background: #4ade80;
+    /* Greenish based on ref */
+    color: #000;
+    padding: 1rem 2.5rem;
+    font-weight: 800;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.btn-pricing:hover {
+    background: #2ecc71;
+}
+
+@media (max-width: 1200px) {
+    .subscription-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+
+    .subscription-visual {
+        order: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .pricing-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .phone-overlay {
+        width: 150px;
+        right: 0;
+    }
+
+    .controller-overlay {
+        width: 120px;
+        left: 0;
+    }
+}

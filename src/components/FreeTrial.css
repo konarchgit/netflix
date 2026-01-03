@@ -1,0 +1,89 @@
+.free-trial-section {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    overflow: hidden;
+    margin: 5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.poster-grid-bg {
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 120%;
+    height: 200%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    transform: rotate(-15deg);
+    opacity: 0.4;
+    z-index: 0;
+}
+
+.bg-poster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.bg-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.free-trial-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.95) 100%);
+    z-index: 1;
+}
+
+.free-trial-content {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2.5rem;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.btn-subscribe {
+    background-color: #f7d488;
+    /* Cream/Yellow based on screenshot */
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: 800;
+    padding: 1.2rem 3.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.btn-subscribe:hover {
+    background-color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+    .free-trial-section {
+        height: 350px;
+    }
+
+    .poster-grid-bg {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+}
